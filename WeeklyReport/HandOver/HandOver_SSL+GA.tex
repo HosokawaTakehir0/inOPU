@@ -1,0 +1,101 @@
+%\documentstyle[epsf,twocolumn]{jarticle}       %LaTeX2e仕様
+\documentclass[twocolumn]{jarticle}     %pLaTeX2e仕様(platex.exeの場合)
+%\documentclass[twocolumn]{ujarticle}     %pLaTeX2e仕様(uplatex.exeの場合)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  基本バージョン
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\topmargin}{-45pt}
+%\setlength{\oddsidemargin}{0cm} 
+\setlength{\oddsidemargin}{-7.5mm}
+%\setlength{\evensidemargin}{0cm} 
+\setlength{\textheight}{24.1cm}
+%setlength{\textheight}{25cm} 
+\setlength{\textwidth}{17.4cm}
+%\setlength{\textwidth}{172mm} 
+\setlength{\columnsep}{11mm}
+
+\kanjiskip=.07zw plus.5pt minus.5pt
+
+
+% 【節が変わるごとに (1.1)(1.2) … (2.1)(2.2) と数式番号をつけるとき】
+%\makeatletter
+%\renewcommand{\theequation}{%
+%\thesection.\arabic{equation}} %\@addtoreset{equation}{section}
+%\makeatother
+
+%\renewcommand{\arraystretch}{0.95} 行間の設定
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[dvipdfmx]{graphicx}   %pLaTeX2e仕様(\documentstyle ->\documentclass)\documentclass[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{colortbl}
+\usepackage{multicol}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\twocolumn[
+\noindent
+
+\hspace{1em}
+
+\hfill
+\ \ 細川　岳大
+
+\vspace{2mm}
+
+\hrule
+
+\begin{center}
+{\Large \bf 引き継ぎ資料}
+\end{center}
+\hrule
+\vspace{3mm}
+]
+
+% ここから 文章 Start!
+
+\section{はじめに}
+研究背景として，分類問題におけるラベル付けのコスト削減のため
+一部にのみラベルが付いたデータである半教師あり学習
+(Semi Supervised Learning: SSL)が提案されており，高精度の結果が出ているものの，ラベル数が少なくなると精度が不安定になってしまう報告があり，ラベル付きデータを遺伝的アルゴリズム(Genetic Algorithm: GA)で自動的に少し増やしてあげることで安定させることが目標である．
+
+\section{手法および要素技術について}
+手法について，探索したいラベルなしデータを入力に，それに対応したラベルの集合を出力として学習する．このラベルの集合をGAによって探索する．この時適応度は学習されたモデルに対しラベル付きデータの識別率によって決定する．
+
+探索によって得られたある程度正しいラベル付けがなされたとされるデータに元々のラベル付きデータを加えてSSLで学習して最終的なモデルを得て，それにおけるテストデータの識別率を指標とする．\\
+\\
+要素技術は以下のものがあり調べてたり私の卒論に簡単に書いてあるものを参考にするなどしてください．
+\begin{itemize}
+	\item SSL
+	\item Contrastive Learning
+	\item SimCLR
+	\item Pseudo Label
+	\item Genetic Algorithm
+	\item (FixMatch)
+\end{itemize}
+また， SSL については研究が盛んであるため新たな手法などの調査は
+たまに行ってください．
+
+しかし，GA を使う性質上一個体の適応度計算の時間が少なくて済むように様々な　SSL　の手法の中でも SimCLR のように事前に Encoder を作ってから分類器を学習する方が効率的かと思われる．その一方で，最終的な識別率の検証の際には FixMatch や他の時間のかかる手法を取り入れるのは一つの手だと思う．
+
+\section{現時点での成果と今後の展望}
+CIFAR10 という10クラス識別のデータで各ラベル5枚ずつ分かっている状態での実験で，新たに100枚のデータに GA でラベル付けをして再学習させたものが baseline に対し識別率を同程度まであげることが出来た．(baselineはモデルを小さくしているのでSoTAよりはかなり低い精度である)
+
+展望として，これまでは50枚と多めだったので，10枚の場合でも同程度出せるのか，また出せたとして安定した精度となるのかという点，
+より付与されるラベルの精度を改善し識別率の向上，また CIFAR10 は均衡なデータのため一部データをマスクするなどして
+より現実に近い不均衡データについてできるかどうかなども考えられる．
+
+また，そのために別の手法や工夫を取り入れる必要があり，特にvalid用のラベル付きデータが非常に少なくなるので適応度の工夫が必須である．
+一応個人的に考えていることとして本研究から少しずれるがdeep clusteringなどの教師なし学習を組み込めないかと考えている．
+
+\section{最後に}
+もしソースコードや内容について分からない点があればchibilion1take@gmail.comに直接連絡してください．この研究自体良い成果が残せるかは非常に難しいところですが，頑張ってください．
+
+
+\end{document}
+
+
